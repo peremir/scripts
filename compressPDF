@@ -1,0 +1,45 @@
+#!/bin/bash
+
+input=$1
+flag=$2
+output=$3
+
+usage () 
+{ 
+ echo -e "Usage:"
+ echo "$(basename "$0") input.pdf"
+ echo "$(basename "$0") input.pdf -o output.pdf"
+ exit 1 
+}
+
+if [[ $# -eq 1 ]]; 
+ then if [[ $input == *.pdf ]]; 
+  then gs \
+       -sDEVICE=pdfwrite \
+       -dCompatibilityLevel=1.4 \
+       -dPDFSETTINGS=/screen \
+       -dNOPAUSE \
+       -dQUIET \
+       -dBATCH \
+       -sOutputFile="${input::-4}_compressed.pdf" \
+       $input
+ else usage	 
+ fi
+elif [[ $# -eq 3 ]]; 
+ then if [[ $input == *.pdf && $flag == "-o" && $output == *.pdf ]]; 
+  then gs \
+       -sDEVICE=pdfwrite \
+       -dCompatibilityLevel=1.4 \
+       -dPDFSETTINGS=/screen \
+       -dNOPAUSE \
+       -dQUIET \
+       -dBATCH \
+       -sOutputFile=$output \
+       $input
+ else usage
+ fi
+else usage
+fi
+
+
+
